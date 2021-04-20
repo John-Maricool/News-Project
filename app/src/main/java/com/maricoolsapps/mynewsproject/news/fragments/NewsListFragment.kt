@@ -14,7 +14,6 @@ import com.maricoolsapps.mynewsproject.R
 import com.maricoolsapps.mynewsproject.databinding.FragmentNewsListBinding
 import com.maricoolsapps.mynewsproject.news.NewsRecyclerAdapter
 import com.maricoolsapps.mynewsproject.news.NewsViewModel
-import com.maricoolsapps.mynewsproject.news.adapter.TabAdapter
 import com.maricoolsapps.mynewsproject.news.models.Articles
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,9 +31,6 @@ class NewsListFragment : Fragment(R.layout.fragment_news_list),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentNewsListBinding.bind(view)
-       /* val adapter = TabAdapter(
-            requireActivity().supportFragmentManager
-        )*/
 
         binding.apply {
             tabLayout.addTab(tabLayout.newTab().setText("Health"));
@@ -52,25 +48,7 @@ class NewsListFragment : Fragment(R.layout.fragment_news_list),
             tabLayout.addTab(tabLayout.newTab().setText("Sports"));
         }
 
-        /*adapter.addFragment(HealthFragment(), "Health")
-        adapter.addFragment(TechnologyFragment(), "Technology")
-        adapter.addFragment(PoliticsFragment(), "Politics")
-        adapter.addFragment(BusinessFragment(), "Business")
-        adapter.addFragment(LifestyleFragment(), "Lifestyle")
-        adapter.addFragment(FootballFragment(), "Football")
-        adapter.addFragment(MusicFragment(), "Music")
-        adapter.addFragment(BitcoinFragment(), "Bitcoin")
-        adapter.addFragment(NigeriaFragment(), "Nigeria")
-        adapter.addFragment(EntertainmentFragment(), "Entertainment")
-        adapter.addFragment(WeatherFragment(), "Weather")
-        adapter.addFragment(ScienceFragment(), "Science")
-        adapter.addFragment(SportsFragment(), "Sports")*/
-
-      /* binding.pager.adapter = adapter
-        binding.apply {
-            tabLayout.setupWithViewPager(pager, true)
-        }*/
-         adapter = NewsRecyclerAdapter(this)
+        adapter = NewsRecyclerAdapter(this)
 
         binding.apply {
             includeView.recyclerView.setHasFixedSize(true)
