@@ -10,6 +10,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
             app:tabMode="scrollable"
             android:layout_height="wrap_content" />
 
@@ -24,14 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tab_layout"
         layout="@layout/news_list_recycler_view"/>
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/text_view_error"

@@ -9,7 +9,7 @@ class NewsViewModel
     private val repository: NewsRepository
 ): ViewModel(){
 
-    private val currectCategory = MutableLiveData("sports")
+    private val currectCategory = MutableLiveData("health")
 
     val news = currectCategory.switchMap { query ->
         repository.getNews(query).cachedIn(viewModelScope)

@@ -3,6 +3,7 @@ package com.maricoolsapps.mynewsproject.news.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -16,6 +17,8 @@ import com.maricoolsapps.mynewsproject.news.NewsRecyclerAdapter
 import com.maricoolsapps.mynewsproject.news.NewsViewModel
 import com.maricoolsapps.mynewsproject.news.models.Articles
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_news_list.*
+import java.util.*
 
 @AndroidEntryPoint
 class NewsListFragment : Fragment(R.layout.fragment_news_list),
@@ -38,6 +41,8 @@ class NewsListFragment : Fragment(R.layout.fragment_news_list),
             tabLayout.addTab(tabLayout.newTab().setText("Politics"));
             tabLayout.addTab(tabLayout.newTab().setText("Business"));
             tabLayout.addTab(tabLayout.newTab().setText("Lifestyle"));
+            tabLayout.addTab(tabLayout.newTab().setText("Catholic"));
+            tabLayout.addTab(tabLayout.newTab().setText("Christian"));
             tabLayout.addTab(tabLayout.newTab().setText("Football"));
             tabLayout.addTab(tabLayout.newTab().setText("Music"));
             tabLayout.addTab(tabLayout.newTab().setText("Bitcoin"));
@@ -61,10 +66,10 @@ class NewsListFragment : Fragment(R.layout.fragment_news_list),
 
         adapter.addLoadStateListener { loadState ->
             binding.apply {
-                progressBar.isVisible = loadState.source.refresh is LoadState.Loading
                 includeView.recyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
                 buttonRetry.isVisible = loadState.source.refresh is LoadState.Error
                 textViewError.isVisible = loadState.source.refresh is LoadState.Error
+                includeView.swipeToRefresh.isRefreshing = loadState.source.refresh is LoadState.Loading
 
                 if (loadState.source.refresh is LoadState.NotLoading &&
                     loadState.append.endOfPaginationReached &&
@@ -77,7 +82,6 @@ class NewsListFragment : Fragment(R.layout.fragment_news_list),
                 }
             }
         }
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -95,13 +99,17 @@ class NewsListFragment : Fragment(R.layout.fragment_news_list),
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                val text = tab?.text.toString().toLowerCase()
+                val text = tab?.text.toString().toLowerCase(Locale.ROOT)
                 viewModel.searchNews(text)
                 adapter.refresh()
             }
         })
 
         binding.includeView.swipeToRefresh.setOnRefreshListener {
+            val position = binding.tabLayout.selectedTabPosition
+            val tab = binding.tabLayout.getTabAt(position)
+            val text = tab?.text.toString()
+            viewModel.searchNews(text)
             adapter.refresh()
             binding.includeView.swipeToRefresh.isRefreshing = false
         }

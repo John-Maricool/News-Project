@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/newsListFragment"
         android:name="com.maricoolsapps.mynewsproject.news.fragments.NewsListFragment"
-        android:label="fragment_news_list"
+        android:label="Categories"
         tools:layout="@layout/fragment_news_list">
         <action
             android:id="@+id/action_newsListFragment_to_newsDetailFragment"
@@ -24,34 +24,4 @@
             android:name="news"
             app:argType="com.maricoolsapps.mynewsproject.news.models.Articles" />
     </fragment>
-    <fragment
-        android:id="@+id/technologyFragment"
-        android:name="com.maricoolsapps.mynewsproject.news.fragments.TechnologyFragment"
-        android:label="fragment_technology"
-        tools:layout="@layout/fragment_technology" />
-    <fragment
-        android:id="@+id/sportsFragment"
-        android:name="com.maricoolsapps.mynewsproject.news.fragments.SportsFragment"
-        android:label="fragment_sports"
-        tools:layout="@layout/fragment_sports" />
-    <fragment
-        android:id="@+id/scienceFragment"
-        android:name="com.maricoolsapps.mynewsproject.news.fragments.ScienceFragment"
-        android:label="fragment_science"
-        tools:layout="@layout/fragment_science" />
-    <fragment
-        android:id="@+id/healthFragment"
-        android:name="com.maricoolsapps.mynewsproject.news.fragments.HealthFragment"
-        android:label="fragment_health"
-        tools:layout="@layout/fragment_health" />
-    <fragment
-        android:id="@+id/entertainmentFragment"
-        android:name="com.maricoolsapps.mynewsproject.news.fragments.EntertainmentFragment"
-        android:label="fragment_entertainment"
-        tools:layout="@layout/fragment_entertainment" />
-    <fragment
-        android:id="@+id/businessFragment"
-        android:name="com.maricoolsapps.mynewsproject.news.fragments.BusinessFragment"
-        android:label="fragment_business"
-        tools:layout="@layout/fragment_business" />
 </navigation>

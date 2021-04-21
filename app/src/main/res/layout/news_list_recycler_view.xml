@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:id="@+id/swipe_to_refresh"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="#C6C2C2"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.recyclerview.widget.RecyclerView
