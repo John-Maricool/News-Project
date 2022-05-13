@@ -1,15 +1,16 @@
-package com.maricoolsapps.mynewsproject.news
+package com.maricoolsapps.mynewsproject.news.di
 
+import com.maricoolsapps.mynewsproject.news.network.newsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object AppModule {
 
     @Provides

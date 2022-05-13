@@ -8,20 +8,13 @@
 
     <fragment
         android:id="@+id/newsListFragment"
-        android:name="com.maricoolsapps.mynewsproject.news.fragments.NewsListFragment"
-        android:label="Categories"
-        tools:layout="@layout/fragment_news_list">
-        <action
-            android:id="@+id/action_newsListFragment_to_newsDetailFragment"
-            app:destination="@id/newsDetailFragment" />
+        android:name="com.maricoolsapps.mynewsproject.news.presentation.ui.news_list.NewsListFragment"
+        android:label="Categories">
     </fragment>
     <fragment
         android:id="@+id/newsDetailFragment"
-        android:name="com.maricoolsapps.mynewsproject.news.fragments.NewsDetailFragment"
-        android:label="News"
-        tools:layout="@layout/fragment_news_detail">
-        <argument
-            android:name="news"
-            app:argType="com.maricoolsapps.mynewsproject.news.models.Articles" />
+        android:name="com.maricoolsapps.mynewsproject.news.presentation.ui.news.NewsDetailFragment"
+        android:label="News">
+
     </fragment>
 </navigation>
