@@ -5,39 +5,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.maricoolsapps.mynewsproject.news.presentation.composables.NewsCard
-import com.maricoolsapps.mynewsproject.news.presentation.composables.NewsCategoryChip
-import com.maricoolsapps.mynewsproject.news.utils.getAllNewsCategories
+import com.maricoolsapps.mynewsproject.news.appcomponents.ApplicationClass
+import com.maricoolsapps.mynewsproject.news.presentation.AppTheme
+import com.maricoolsapps.mynewsproject.news.presentation.composables.CircularIndeterminateProgressBar
+import com.maricoolsapps.mynewsproject.news.presentation.composables.NewsChip
+import com.maricoolsapps.mynewsproject.news.presentation.composables.NewsComposable
+import com.maricoolsapps.mynewsproject.news.presentation.composables.searchAppBar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@ExperimentalMaterialApi
 @AndroidEntryPoint
 class NewsListFragment : Fragment() {
 
     private val viewModel: NewsViewModel by viewModels()
+
+    @Inject
+    lateinit var app: ApplicationClass
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,83 +39,42 @@ class NewsListFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                val news = viewModel.news.value
-                val query = viewModel.query.value
 
-                val selectedCategory = viewModel.selectedCategory.value
-                Column {
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        color = Color.White,
-                        elevation = 8.dp
+                AppTheme(darkTheme = app.isDark.value) {
+                    val news = viewModel.news
+                    val query = viewModel.query.value
+                    val loading = viewModel.loading.value
+                    val selectedCategory = viewModel.selectedCategory.value
+
+                    Column(
+                        modifier = Modifier.background(MaterialTheme.colors.secondary)
                     ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth()
+                        //This is the search app bar on the top of the screen.
+                        searchAppBar(
+                            query = query,
+                            changeQuery = { viewModel.changeQuery(query) },
+                            searchNews = { viewModel.searchNews() },
+                            onToggleTheme = { app.toggleLightTheme() }
+                        )
+                        // This is where the toggleable chips are
+                        NewsChip(
+                            categoryScrollPosition = viewModel.categoryScrollPosition,
+                            selectedCategory = selectedCategory,
+                            onSelectedCategoryChanged = {
+                                viewModel.onSelectedCategoryChanged(it.toString())
+                            },
+                            onChangeCategoryScrollPosition = {
+                                viewModel.onChangeCategoryScrollPosition(it)
+                            }
                         ) {
-                            TextField(
-                                value = query,
-                                onValueChange = { newValue ->
-                                    viewModel.changeQuery(newValue)
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth(0.9f)
-                                    .padding(8.dp)
-                                    .background(Color.White),
-                                label = {
-                                    Text(text = "Search")
-                                },
-                                keyboardOptions = KeyboardOptions(
-                                    keyboardType = KeyboardType.Text,
-                                    imeAction = ImeAction.Search
-                                ),
-                                textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
-                                keyboardActions = KeyboardActions(onSearch = { viewModel.searchNews() }),
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Filled.Search,
-                                        contentDescription = "contentDescription"
-                                    )
-                                }
-                            )
+                            viewModel.searchNews()
                         }
-                    }
-                    val scrollState = rememberLazyListState()
-                    val coroutineScope = rememberCoroutineScope()
-
-                    LazyRow(
-                        state = scrollState,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 8.dp, bottom = 8.dp)
-                            .background(Color.White),
-                    ) {
-                        coroutineScope.launch {
-                            scrollState.scrollToItem(viewModel.categoryScrollPosition)
-                        }
-                        for (category in getAllNewsCategories()) {
-                            item {
-                                NewsCategoryChip(category = category.value,
-                                    isSelected = selectedCategory == category,
-                                    onSelectedCategoryChanged = {
-                                        viewModel.onSelectedCategoryChanged(it)
-                                        viewModel.onChangeCategoryScrollPosition(
-                                            scrollState.firstVisibleItemIndex
-                                        )
-                                    },
-                                    onExecuteSearch = {
-                                        viewModel.searchNews()
-                                    })
-                            }
-                        }
-                    }
-                    LazyColumn {
-                        itemsIndexed(
-                            items = news
-                        ) { index, news ->
-                            NewsCard(news = news) {
-
-                            }
+                        //News Composable
+                        Box(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            NewsComposable(news = news)
+                            CircularIndeterminateProgressBar(isDisplayed = loading)
                         }
                     }
                 }

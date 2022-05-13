@@ -1,12 +1,16 @@
 package com.maricoolsapps.mynewsproject.news.appcomponents
 
 import android.app.Application
+import androidx.compose.runtime.mutableStateOf
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class ApplicationClass: Application() {
 
-    override fun onCreate() {
-        super.onCreate()
+    val isDark = mutableStateOf(false)
+
+    fun toggleLightTheme(){
+        isDark.value = !isDark.value
     }
+
 }

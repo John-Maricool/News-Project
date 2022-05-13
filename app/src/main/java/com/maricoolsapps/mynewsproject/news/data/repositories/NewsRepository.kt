@@ -1,8 +1,9 @@
 package com.maricoolsapps.mynewsproject.news.data.repositories
 
-import com.maricoolsapps.mynewsproject.news.domain.models.News
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import com.maricoolsapps.mynewsproject.news.data.source.NewsSource
 import com.maricoolsapps.mynewsproject.news.network.newsApi
-import com.maricoolsapps.mynewsproject.news.network.newsApi.Companion.apiKey
 import com.maricoolsapps.mynewsproject.news.utils.DomainMapperImpl
 import javax.inject.Inject
 
@@ -12,13 +13,14 @@ class NewsRepository
     private val mapper: DomainMapperImpl
 ) {
 
-    suspend fun getNews(category: String): List<News> {
-        return mapper.toDomainList(
-            newsapi.getHeadline(
-                page = 1,
-                query = category,
-                key = apiKey
-            ).articles
-        )
-    }
+    fun getNewsResults(query: String) =
+        Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                maxSize = 100,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { NewsSource(newsapi, query, mapper) }
+        ).flow
+
 }

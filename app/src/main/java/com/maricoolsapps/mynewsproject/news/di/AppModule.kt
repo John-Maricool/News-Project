@@ -1,5 +1,6 @@
 package com.maricoolsapps.mynewsproject.news.di
 
+import com.maricoolsapps.mynewsproject.news.appcomponents.ApplicationClass
 import com.maricoolsapps.mynewsproject.news.network.newsApi
 import dagger.Module
 import dagger.Provides
@@ -12,6 +13,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideApplicationClass(): ApplicationClass {
+        return ApplicationClass()
+    }
 
     @Provides
     @Singleton
