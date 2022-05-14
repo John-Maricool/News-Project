@@ -1,5 +1,9 @@
 package com.maricoolsapps.mynewsproject.news.domain.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class News(
     val title: String?,
     val author: String?,
@@ -8,4 +12,4 @@ data class News(
     val content: String?,
     val photo: String?,
     val sourceName: String?
-)
+) : Parcelable

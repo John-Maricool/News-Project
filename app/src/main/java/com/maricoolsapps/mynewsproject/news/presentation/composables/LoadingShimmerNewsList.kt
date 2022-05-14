@@ -1,73 +1,38 @@
 package com.maricoolsapps.mynewsproject.news.presentation.composables
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun LoadingNewsListShimmer(
-    imageHeight: Dp,
-    padding: Dp = 16.dp
-){
-    BoxWithConstraints(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        val cardWidthPx = with(LocalDensity.current) { (maxWidth - (padding*2)).toPx() }
-        val cardHeightPx = with(LocalDensity.current) { (imageHeight - padding).toPx() }
-        val gradientWidth: Float = (0.2f * cardHeightPx)
+fun LoadingNewsListShimmer() {
+    val gradient = listOf(
+        Color.LightGray.copy(alpha = 0.9f), //darker grey (90% opacity)
+        Color.LightGray.copy(alpha = 0.3f), //lighter grey (30% opacity)
+        Color.LightGray.copy(alpha = 0.9f)
+    )
 
-        val infiniteTransition = rememberInfiniteTransition()
-        val xCardShimmer = infiniteTransition.animateFloat(
-            initialValue = 0f,
-            targetValue = (cardWidthPx + gradientWidth),
-            animationSpec = infiniteRepeatable(
-                animation = tween(
-                    durationMillis = 1300,
-                    easing = LinearEasing,
-                    delayMillis = 300
-                ),
-                repeatMode = RepeatMode.Restart
+    val transition = rememberInfiniteTransition() // animate infinite times
+
+    val translateAnimation = transition.animateFloat( //animate the transition
+        initialValue = 0f,
+        targetValue = 1000f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 1000, // duration for the animation
+                easing = FastOutLinearInEasing
             )
         )
-        val yCardShimmer = infiniteTransition.animateFloat(
-            initialValue = 0f,
-            targetValue = (cardHeightPx + gradientWidth),
-            animationSpec = infiniteRepeatable(
-                animation = tween(
-                    durationMillis = 1300,
-                    easing = LinearEasing,
-                    delayMillis = 300
-                ),
-                repeatMode = RepeatMode.Restart
-            )
-        )
-
-        val colors = listOf(
-            Color.LightGray.copy(alpha = .9f),
-            Color.LightGray.copy(alpha = .3f),
-            Color.LightGray.copy(alpha = .9f),
-        )
-
-        LazyColumn {
-            items(5){
-                ShimmerNewsCardItem(
-                    colors = colors,
-                    xShimmer = xCardShimmer.value,
-                    yShimmer = yCardShimmer.value,
-                    cardHeight = imageHeight,
-                    gradientWidth = gradientWidth,
-                    padding = padding
-                )
-            }
-        }
-    }
-
+    )
+    val brush = linearGradient(
+        colors = gradient,
+        start = Offset(200f, 200f),
+        end = Offset(x = translateAnimation.value,
+            y = translateAnimation.value)
+    )
+    ShimmerNewsCardItem(brush = brush)
 
 }

@@ -1,6 +1,8 @@
 package com.maricoolsapps.mynewsproject.news.presentation.composables
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 
 @Composable
-fun searchAppBar(
+fun SearchAppBar(
     query: String,
     changeQuery: (String) -> Unit,
     searchNews: () -> Unit,
@@ -38,6 +40,7 @@ fun searchAppBar(
             TextField(
                 value = query,
                 onValueChange = { newValue ->
+                    Log.d("valuena", newValue)
                     changeQuery(newValue)
                 },
                 modifier = Modifier
@@ -49,14 +52,19 @@ fun searchAppBar(
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Search
+                    imeAction = ImeAction.Done
                 ),
+                keyboardActions = KeyboardActions(onDone = {
+                    searchNews()
+                }),
                 textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
-                keyboardActions = KeyboardActions(onSearch = { searchNews() }),
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Filled.Search,
-                        contentDescription = "contentDescription"
+                        contentDescription = "contentDescription",
+                        modifier = Modifier.clickable(
+                            onClick = {searchNews()}
+                        )
                     )
                 }
             )
@@ -67,12 +75,12 @@ fun searchAppBar(
                 IconButton(
                     onClick = { onToggleTheme() },
                     modifier = Modifier
-                        .constrainAs(menu){
+                        .constrainAs(menu) {
                             end.linkTo(parent.end)
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
                         }
-                ){
+                ) {
                     Icon(
                         imageVector = Icons.Filled.MoreVert,
                         contentDescription = null

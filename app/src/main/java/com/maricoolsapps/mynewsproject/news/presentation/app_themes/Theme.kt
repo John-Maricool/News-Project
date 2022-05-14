@@ -1,4 +1,4 @@
-package com.maricoolsapps.mynewsproject.news.presentation
+package com.maricoolsapps.mynewsproject.news.presentation.app_themes
 
 import android.annotation.SuppressLint
 import androidx.compose.material.ExperimentalMaterialApi
@@ -7,6 +7,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.maricoolsapps.mynewsproject.news.presentation.*
 
 
 @SuppressLint("ConflictingOnColor")
@@ -46,8 +47,8 @@ fun AppTheme(
 ) {
     MaterialTheme(
         colors = if (darkTheme) DarkThemeColors else LightThemeColors,
-          typography = QuickSandTypography,
-          shapes = AppShapes
+        typography = QuickSandTypography,
+        shapes = AppShapes
     ) {
         content()
     }

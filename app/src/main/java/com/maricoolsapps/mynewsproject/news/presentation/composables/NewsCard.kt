@@ -12,12 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.maricoolsapps.mynewsproject.R
 import com.maricoolsapps.mynewsproject.news.domain.models.News
+import com.maricoolsapps.mynewsproject.news.presentation.ui.news_list.NewsListFragmentDirections
 import com.maricoolsapps.mynewsproject.news.utils.loadPicture
 import kotlinx.coroutines.flow.Flow
 
@@ -77,15 +80,47 @@ private fun NewsCard(
 
 @Composable
 fun NewsComposable(
-    news: Flow<PagingData<News>>
+    news: Flow<PagingData<News>>,
+    navController: NavController
 ) {
     val newsItem: LazyPagingItems<News> = news.collectAsLazyPagingItems()
 
     LazyColumn {
         items(newsItem) {
-            it?.let { it1 ->
-                NewsCard(news = it1) {
+            it?.let { newsItem ->
+                NewsCard(news = newsItem) {
+                    val action =
+                        NewsListFragmentDirections.actionNewsListFragmentToNewsDetailFragment(
+                            newsItem
+                        )
+                    navController.navigate(action)
+                }
+            }
+        }
 
+        newsItem.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    items(8) {
+                        LoadingNewsListShimmer()
+                    }
+                }
+                loadState.append is LoadState.Loading -> {
+                    item {
+                        CircularIndeterminateProgressBar(isDisplayed = true)
+                    }
+                }
+                loadState.refresh is LoadState.Error -> {
+                    val e = newsItem.loadState.refresh as LoadState.Error
+                    item {
+                        ShowSnackBar(text = e.error.message.toString())
+                    }
+                }
+                loadState.append is LoadState.Error -> {
+                    val e = newsItem.loadState.append as LoadState.Error
+                    item {
+                        ShowSnackBar(text = e.error.message.toString())
+                    }
                 }
             }
         }

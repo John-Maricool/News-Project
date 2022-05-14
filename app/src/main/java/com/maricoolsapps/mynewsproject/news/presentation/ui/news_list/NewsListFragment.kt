@@ -14,12 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.maricoolsapps.mynewsproject.news.appcomponents.ApplicationClass
-import com.maricoolsapps.mynewsproject.news.presentation.AppTheme
+import com.maricoolsapps.mynewsproject.news.presentation.app_themes.AppTheme
 import com.maricoolsapps.mynewsproject.news.presentation.composables.CircularIndeterminateProgressBar
 import com.maricoolsapps.mynewsproject.news.presentation.composables.NewsChip
 import com.maricoolsapps.mynewsproject.news.presentation.composables.NewsComposable
-import com.maricoolsapps.mynewsproject.news.presentation.composables.searchAppBar
+import com.maricoolsapps.mynewsproject.news.presentation.composables.SearchAppBar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -39,20 +40,19 @@ class NewsListFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-
                 AppTheme(darkTheme = app.isDark.value) {
                     val news = viewModel.news
                     val query = viewModel.query.value
-                    val loading = viewModel.loading.value
+                    val isLoading = viewModel.isLoading.value
                     val selectedCategory = viewModel.selectedCategory.value
 
                     Column(
                         modifier = Modifier.background(MaterialTheme.colors.secondary)
                     ) {
                         //This is the search app bar on the top of the screen.
-                        searchAppBar(
+                        SearchAppBar(
                             query = query,
-                            changeQuery = { viewModel.changeQuery(query) },
+                            changeQuery = { viewModel.changeQuery(it) },
                             searchNews = { viewModel.searchNews() },
                             onToggleTheme = { app.toggleLightTheme() }
                         )
@@ -73,8 +73,8 @@ class NewsListFragment : Fragment() {
                         Box(
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            NewsComposable(news = news)
-                            CircularIndeterminateProgressBar(isDisplayed = loading)
+                            NewsComposable(news = news, navController = findNavController())
+                            CircularIndeterminateProgressBar(isDisplayed = isLoading)
                         }
                     }
                 }

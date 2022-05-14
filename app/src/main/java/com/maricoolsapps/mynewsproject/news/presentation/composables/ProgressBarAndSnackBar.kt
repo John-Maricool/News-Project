@@ -1,14 +1,14 @@
 package com.maricoolsapps.mynewsproject.news.presentation.composables
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Snackbar
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 
 @Composable
 fun CircularIndeterminateProgressBar(
@@ -26,6 +26,24 @@ fun CircularIndeterminateProgressBar(
             )
         }
     }
+}
+
+@Composable
+fun ShowSnackBar(text: String) {
+    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+        val snackbar = createRef()
+        Snackbar(
+            modifier = Modifier.constrainAs(snackbar) {
+                bottom.linkTo(parent.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            },
+            content = {
+                Text(text)
+            }
+        )
+    }
+
 }
 
 

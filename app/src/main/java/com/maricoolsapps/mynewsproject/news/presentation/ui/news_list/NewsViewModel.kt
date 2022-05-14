@@ -23,9 +23,9 @@ class NewsViewModel
     private val repository: NewsRepository
 ) : ViewModel() {
 
-    val query = mutableStateOf("Catholic")
+    val query = mutableStateOf("Health")
 
-    val loading = mutableStateOf(true)
+    val isLoading = mutableStateOf(false)
 
     val selectedCategory: MutableState<NewsCategory?> = mutableStateOf(null)
 
@@ -38,17 +38,17 @@ class NewsViewModel
     }
 
     fun searchNews() {
-        loading.value = true
+        isLoading.value = true
         try {
             resetSearchState()
             viewModelScope.launch {
                 val result = repository.getNewsResults(query.value)
                     .cachedIn(viewModelScope)
                 news = result
-                loading.value = false
+                isLoading.value = false
             }
         } catch (e: Exception) {
-            loading.value = false
+            isLoading.value = false
             Log.d("errors", "Error getting data")
         }
     }
