@@ -40,5 +40,4 @@ Basic Knowledge of Android Studio, Kotlin and Firebase
 
 #### Screenshots
 <img src="https://user-images.githubusercontent.com/60844538/168442715-c8cc83dc-9386-4883-874a-1498cd322cc0.png" width="250">  <img src="https://user-images.githubusercontent.com/60844538/168442718-d2499892-5114-4130-9a89-54347cb4d795.png" width="250"> 
-<img src="https://user-images.githubusercontent.com/60844538/168442727-2f7369f0-2629-401d-b814-1fd63ea3a9f5.png" width="250">  <img srch="ttps://user-images.githubusercontent.com/60844538/168442725-38e36642-72bd-41eb-a43d-1df8e675da8c.png" width="250"> 
-<img src="https://user-images.githubusercontent.com/60844538/168442715-c8cc83dc-9386-4883-874a-1498cd322cc0.png" width="250"> 
+<img src="https://user-images.githubusercontent.com/60844538/168442727-2f7369f0-2629-401d-b814-1fd63ea3a9f5.png" width="250">  <img srch="ttps://user-images.githubusercontent.com/60844538/168442725-38e36642-72bd-41eb-a43d-1df8e675da8c.png" width="250">  <img src="https://user-images.githubusercontent.com/60844538/168442879-4935d431-46e8-4b8e-b618-dad43e08ee37.png" width="250"> 
